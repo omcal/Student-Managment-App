@@ -1,5 +1,6 @@
 package com.example.demo.service.S3;
 
+import com.amazonaws.services.kafka.model.S3;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
@@ -51,6 +52,9 @@ public class S3Service implements FileServiceImpl {
     @Override
     public byte[] downloadFile(String filename) {
         S3Object object = s3.getObject(bucketName, filename);
+        if (!s3.doesObjectExist(bucketName,filename)){
+            return "File not found".getBytes();
+        }
         S3ObjectInputStream objectContent = object.getObjectContent();
         try {
             return IOUtils.toByteArray(objectContent);
