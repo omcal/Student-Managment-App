@@ -4,6 +4,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
 import com.example.demo.repository.S3Repo.FileServiceImpl;
+import org.hibernate.id.UUIDGenerator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,6 +13,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,6 +31,13 @@ public class S3Service implements FileServiceImpl {
     @Override
     public String saveFile(MultipartFile file) {
         String originalFilename = file.getOriginalFilename();
+        String origin=originalFilename.substring(0, originalFilename.lastIndexOf('.'));
+        String extension=".pdf";
+        int lengthOfBucket=s3.listObjectsV2(bucketName).getKeyCount();
+        if (s3.doesObjectExist(bucketName,originalFilename)){
+            originalFilename=origin+"("+lengthOfBucket+")"+extension;
+        }
+
         try {
             File file1 = convertMultiPartToFile(file);
             PutObjectResult putObjectResult = s3.putObject(bucketName, originalFilename, file1);

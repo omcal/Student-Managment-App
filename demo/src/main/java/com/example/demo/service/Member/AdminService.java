@@ -3,6 +3,7 @@ package com.example.demo.service.Member;
 import com.example.demo.entity.MemberEntity.Member;
 import com.example.demo.repository.MemberRepo.MemberRepository;
 import lombok.AllArgsConstructor;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,11 +19,35 @@ public class AdminService {
 
     public String deactivateStudent(@PathVariable Long id){
         Optional<Member> member = memberRepository.findById(id);
-        if (member.isPresent()){
-            member.get().setActive(false);
-            return  "Deactivated Student";
+        try {
+            if (member.isPresent()){
+                if (member.get().getRole().toString().equals("STUDENT")){
+                    member.get().setActive(false);
+                    memberRepository.save(member.get());
+                    return  "Deactivated Student";
+                }
+                return "User is not a student";
+
+            }
+            else{
+                throw new RuntimeException("User not found");
+            }
+        }catch (Exception e){
+            return e.getMessage();
         }
-        return "There is a error";
+    }
+    public String updateUser(Member member){
+        try{
+            if (memberRepository.findByEmail(member.getEmail()).isPresent()){
+                Member temp=memberRepository.findByEmail(member.getEmail()).get();
+                member.setId(temp.getId());
+                memberRepository.save(member);
+                return "The user updated";
+            }
+            else throw new IllegalArgumentException("There is a mistake or try to add user");
+        }catch (Exception e){
+            return e.getMessage();
+        }
     }
     public List<Member> getActiveList(){
         List<Member> activeMember=new ArrayList<>();

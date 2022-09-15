@@ -2,6 +2,7 @@ package com.example.demo.dto;
 
 
 import com.example.demo.entity.Enums.LectureType;
+import com.example.demo.entity.LectureEntity.LectureDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +18,9 @@ public class LecturePostingRequest {
 
     private LectureType lectureType;
 
-    private  Long anno_poster_id;
+    private LectureDate lectureDate;
+
+    private  Long lecture_poster_id;
 
 
 }

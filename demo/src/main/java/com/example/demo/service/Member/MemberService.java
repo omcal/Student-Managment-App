@@ -35,8 +35,12 @@ public class MemberService implements UserDetailsService {
     }
     public String signUp(Member member) {
         boolean isUserExist=memberRepository.existsByEmail(member.getEmail());
-        if(isUserExist){
-            throw new IllegalStateException("User already exists");
+        try {
+            if(isUserExist){
+                throw new IllegalStateException("User already exists");
+            }
+        }catch (Exception e){
+            return e.getMessage();
         }
         String hashedPassword=bCryptPasswordEncoder.encode(member.getPassword());
 

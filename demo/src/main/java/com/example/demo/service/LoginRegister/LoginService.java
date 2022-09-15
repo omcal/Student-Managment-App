@@ -23,10 +23,15 @@ public class LoginService {
         SecurityContext newContext = SecurityContextHolder.createEmptyContext();
         newContext.setAuthentication(authenticatedAuthentication);
         SecurityContextHolder.setContext(newContext);
-        if (newContext.getAuthentication().isAuthenticated()){
-            return "Authentication is successful";
+        try{
+            if (newContext.getAuthentication().isAuthenticated()){
+                return "Authentication is successful";
 
+            }else {
+                throw  new IllegalAccessException("Authentication failed");
+            }
+        } catch (Exception e) {
+            return e.getMessage();
         }
-        return "Nope";
     }
 }

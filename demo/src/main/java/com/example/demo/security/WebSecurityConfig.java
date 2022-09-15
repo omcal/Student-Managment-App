@@ -25,12 +25,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/")
-                .permitAll()
+                .antMatchers("/").permitAll()
+                .antMatchers("/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/registration").permitAll()
                 .antMatchers("/student/**").hasAnyAuthority("STUDENT")
                 .antMatchers("/assistant/**").hasAnyAuthority("ASSISTANT")
                 .antMatchers(HttpMethod.POST,"/hw/**").hasAnyAuthority("ASSISTANT","ACADEMICIAN")
+                .antMatchers(HttpMethod.POST,"/coursework/**").hasAnyAuthority("ASSISTANT","ACADEMICIAN")
                 .antMatchers(HttpMethod.GET,"/hw/**").hasAnyAuthority("ASSISTANT","ACADEMICIAN","STUDENT")
                 .antMatchers("/grade/**").hasAnyAuthority("ASSISTANT","ACADEMICIAN")
                 .antMatchers(HttpMethod.POST,"/assistant/**").hasAnyAuthority("ASSISTANT")
@@ -41,9 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/registration").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .logout()
-                .clearAuthentication(true)
-                .logoutSuccessUrl("/").permitAll()
+                .logout().clearAuthentication(true).logoutSuccessUrl("/").permitAll()
                 .and()
                 .formLogin().and()
                 .csrf().disable().httpBasic();

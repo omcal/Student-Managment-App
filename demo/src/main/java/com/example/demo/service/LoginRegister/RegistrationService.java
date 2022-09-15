@@ -14,8 +14,13 @@ public class RegistrationService {
     private final MemberService memberService;
 
     public String register(RegistrationRequest request) {
-        if (!validator.test(request.getEmail())){
-            throw new IllegalArgumentException("Please Input a Valid Email");
+        try {
+            if (!validator.test(request.getEmail())){
+                throw new IllegalArgumentException("Please Input a Valid Email");
+            }
+        }catch (Exception e){
+            return  e.getMessage();
+
         }
         return memberService.signUp(new Member(request.getName(),request.getSurname(),request.getEmail(),request.getPassword(),request.getRole()));
     }

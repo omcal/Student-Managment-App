@@ -7,19 +7,22 @@ import com.example.demo.service.Lecture.AddLectureService;
 
 import com.example.demo.service.Lecture.LectureService;
 import lombok.AllArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @AllArgsConstructor
+@Validated
 // TODO a gui
 public class LectureController {
     private final AddLectureService addLectureService;
     private final LectureService lectureService;
-    @PostMapping(path = "/lecture/add/lecture",consumes = "application/json")
-    public  String registerAnno(@RequestBody LecturePostingRequest request ){
-        return addLectureService.registerAnno(request);
+    @PostMapping(path = "/lecture/add",consumes = "application/json")
+    public  String addNewLecture(@Valid @RequestBody LecturePostingRequest request ){
+        return addLectureService.addNewLecture(request);
     }
     @GetMapping("/lecture/all")
     public List<Lecture> getAllLecture(){

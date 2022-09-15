@@ -21,11 +21,10 @@ public class HWService {
 
         try{
             hwRepository.save(HWs);
+            return "The HW Posted";
         }catch (Exception e){
-            return e.getMessage()+"\n Please check your inputs \n";
-
+            return "Please check your inputs \n";
         }
-        return "The HW Posted";
     }
     public List<HWs> hWsList(){
         return hwRepository.findAll();

@@ -19,15 +19,8 @@ public class LectureDate {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Lecture_sequence")
     @Column(name = "id", nullable = false)
     private Long id;
-
-    @Max(value = 52)
-    @Min(value = 1)
     private int numberOfWeek;
-    @Max(5)
-    @Min(1)
     private int numberOfDays;
-    @Max(8)
-    @Max(1)
     private int numberOfSlot;
 
 

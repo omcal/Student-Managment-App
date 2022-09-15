@@ -13,15 +13,12 @@ import java.util.List;
 import static java.net.HttpURLConnection.HTTP_OK;
 
 @RestController
+@RequestMapping("/coursework")
 public class S3Controller {
 
     @Autowired
-    private S3Service s3Service;;
+    private S3Service s3Service;
 
-    @PostMapping("/student/uploadhw")
-    public String upload(@RequestParam("file") MultipartFile file){
-        return s3Service.saveFile(file);
-    }
 
     @GetMapping("/download/{filename}")
     public ResponseEntity<byte[]> download(@PathVariable("filename") String filename){
@@ -33,7 +30,7 @@ public class S3Controller {
     }
 
 
-    @DeleteMapping("/admin/delete/{filename}")
+    @DeleteMapping("/delete/{filename}")
     public  String deleteFile(@PathVariable("filename") String filename){
         return s3Service.deleteFile(filename);
     }
